@@ -1,33 +1,30 @@
 <template>
-    <div class='slide-show' @mouseover='clearInv' @mouseout='runInv'>
-        <div class="slide-img">
+    <div class='slide-show' @touchstart='clearInv' @touchend='runInv'>
+        <div class="slide-img" ref='slideViewPort'>
             <ul :class='{slideTransition:!slideReset}'
                 :style='{left:-(nowIndex+1)*imgWidth+"px"}'>
                 <li>
-                    <a :href="slides[slides.length-1].href">
-                        <img :src="slides[slides.length-1].src" :key='-1'/>
+                    <a>
+                        <img :width="imgWidth"  :src="slides[slides.length-1].src" :key='-1'/>
                     </a>
                 </li>
                 <li v-for='(val,index) in slides' :key='index'>
-                    <a :href="val.href">
-                        <img :src="val.src" alt=""/>
+                    <a>
+                        <img :width="imgWidth"  :src="val.src" alt=""/>
                     </a>
                 </li>
                 <li>
-                    <a :href="slides[0].href">
-                        <img :src="slides[0].src" :key='slides.length'/>
+                    <a>
+                        <img :width="imgWidth" :src="slides[0].src" :key='slides.length'/>
                     </a>
                 </li>
             </ul>
         </div>
-        <h2>{{slides[slideIndex].title}}</h2>
-        <ul class='slide-pages'>
-            <li @click='throttle(prev)'>&lt;</li>
-            <li v-for='(item,index) in slides'>
-                <a :class='{on:index===slideIndex}' @click='throttle(goTo,index)'>{{index+1}}</a>
-            </li>
-            <li @click='throttle(next)'>&gt;</li>
-        </ul>
+        <h2>
+          <ul>
+            <li v-for='(item,index) in slides' :key="index" :class="{on:index===slideIndex}"></li>
+          </ul>
+        </h2>
     </div>
 </template>
 
@@ -40,12 +37,12 @@ export default {
     },
     inv: {
       type: Number,
-      default: 1000
+      default: 3000
     }
   },
   data() {
     return {
-      imgWidth: 900,
+      imgWidth: 0,
       nowIndex: 0,
       invId: null,
       isShow: true,
@@ -68,15 +65,6 @@ export default {
     }
   },
   methods: {
-    prev() {
-      this.nowIndex--;
-    },
-    next() {
-      this.nowIndex++;
-    },
-    goTo(index) {
-      this.nowIndex = index;
-    },
     throttle(method, arg) {
       if (this.throttleId) {
         return;
@@ -108,18 +96,37 @@ export default {
           }
           this.reSetFlag = true;
         }, 1000);
-        this.reSetId = setInterval(()=>{
-            if(this.reSetFlag){
-                this.slideReset = false;
-                clearInterval(this.reSetId)
-                this.reSetId=null
-            }
-        },1000)
+        this.reSetId = setInterval(() => {
+          if (this.reSetFlag) {
+            this.slideReset = false;
+            clearInterval(this.reSetId);
+            this.reSetId = null;
+          }
+        }, 1100);
+      }
+    },
+    slides(cur,old) {
+      if (cur!=old) {
+        this.$nextTick(() => {
+          this.imgWidth = this.$refs.slideViewPort.clientWidth;
+          this.hammerEle = new Hammer(this.$refs.slideViewPort);
+          this.hammerEle.on("swipeleft", ()=> {
+            this.throttle(()=>{
+               this.nowIndex++
+            })
+           
+          });
+          this.hammerEle.on("swiperight", ()=> {
+           this.throttle(()=>{
+               this.nowIndex--
+            })
+          });
+        });
       }
     }
   },
   mounted() {
-    this.runInv();
+     this.runInv();
   }
 };
 </script>
@@ -127,25 +134,37 @@ export default {
 <style scoped>
 .slide-show {
   position: relative;
-  margin: 15px 15px 15px 0;
+  margin: 10px 0;
   width: 100%;
-  height: 500px;
   overflow: hidden;
+  font-size: 0
 }
 .slide-show h2 {
   position: absolute;
   width: 100%;
   color: #fff;
-  background: #000;
-  opacity: 0.5;
+  background:transparent;
+  opacity: 1;
   bottom: 0;
-  height: 30px;
-  line-height: 30px;
-  text-align: left;
-  padding-left: 15px;
+  height: 24px;
+  font-size: 12px;
+  line-height: 24px;
+  text-align: center;
+}
+.slide-show h2 ul li{
+  display: inline-block;
+  height: 12px;
+  width: 12px;
+  margin: 0 5px;
+  border-radius: 50%;
+  background-color: gray
+}
+.slide-show h2 ul li.on {
+  background-color: blue
 }
 .slide-img {
   width: 100%;
+  min-height: 192px;
   overflow: hidden;
 }
 .slide-img > ul {
@@ -153,26 +172,14 @@ export default {
   /*height: 345px;*/
   width: 1000%;
   left: 0px;
+  padding: 0;
 }
+
 .slideTransition {
   transition: left 1s ease;
 }
 .slide-img > ul > li {
+  overflow: hidden;
   float: left;
-}
-.slide-pages {
-  position: absolute;
-  bottom: 10px;
-  right: 15px;
-}
-.slide-pages li {
-  display: inline-block;
-  padding: 0 10px;
-  cursor: pointer;
-  color: #fff;
-}
-.slide-pages li .on {
-  text-decoration: underline;
-  color: lightblue;
 }
 </style>

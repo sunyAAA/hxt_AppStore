@@ -1,11 +1,9 @@
 <template>
   <div id="app">
     <div class="content">
-      <transition name='fade'>
         <keep-alive>
           <router-view/>
         </keep-alive>
-      </transition>
     </div>
     <footer class="nav-footer">
       <router-link tag="div" to='/index' class="nav-item" active-class="on">
@@ -39,13 +37,6 @@ export default {
   width 100%
   height 100%
   padding-bottom 55px
-  .fade-enter-active, .fade-leave-active 
-    position relative
-    left 0
-    transition: all 1s linear  
-  .fade-enter, .fade-leave-active
-    opacity: 0  
-    left -100%
 .nav-footer
   display flex 
   position fixed

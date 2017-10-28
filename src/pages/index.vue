@@ -10,15 +10,19 @@
         </div>
       </div>
       <slide :slides='slides' :maxwidth='906'></slide>
-      
+      <v-title :msg='"热销商品"'>
+<!--         <span class="icon icon-hot" slot='icon-left'></span>
+        <span class="icon icon-hot" slot='icon-right'></span> -->
+      </v-title>
   </div>
 </template>
 
 <script>
 import Slide from "../components/slide/Slide";
+import VTitle from "../components/Title"
 export default {
   components: {
-    Slide
+    Slide,VTitle
   },
   data() {
     return {

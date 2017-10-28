@@ -37,7 +37,7 @@ export default {
     },
     inv: {
       type: Number,
-      default: 3000
+      default: 4500
     }
   },
   data() {

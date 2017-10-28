@@ -5,9 +5,12 @@ import App from './App'
 import router from './router'
 import VResource from 'vue-resource'
 import './common/stylus/icon.styl'
-r
+/* 手势交互依赖 */
+require('../static/js/hammer.js')
+
 Vue.use(VResource);
 Vue.config.productionTip = false
+
 
 /* eslint-disable no-new */
 new Vue({

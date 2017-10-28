@@ -134,10 +134,9 @@ export default {
 <style scoped>
 .slide-show {
   position: relative;
-  margin: 10px 0;
   width: 100%;
   overflow: hidden;
-  font-size: 0
+  font-size: 0;
 }
 .slide-show h2 {
   position: absolute;
@@ -160,7 +159,7 @@ export default {
   background-color: gray
 }
 .slide-show h2 ul li.on {
-  background-color: blue
+  background-color: #009688
 }
 .slide-img {
   width: 100%;

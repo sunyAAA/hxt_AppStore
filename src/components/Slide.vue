@@ -1,8 +1,8 @@
 <template>
     <div class='slide-show' @touchstart='clearInv' @touchend='runInv'>
         <div class="slide-img" ref='slideViewPort'>
-            <ul :class='{slideTransition:!slideReset}'
-                :style='{left:-(nowIndex+1)*imgWidth+"px"}'>
+            <ul v-if='slides.length' :class='{slideTransition:!slideReset}'
+                :style='transitonStyle'>
                 <li>
                     <a>
                         <img :width="imgWidth"  :src="slides[slides.length-1].src" :key='-1'/>
@@ -10,7 +10,7 @@
                 </li>
                 <li v-for='(val,index) in slides' :key='index'>
                     <a>
-                        <img :width="imgWidth"  :src="val.src" alt=""/>
+                        <img :width="imgWidth"  :src="val.src" :key='index'/>
                     </a>
                 </li>
                 <li>
@@ -33,7 +33,9 @@ export default {
   props: {
     slides: {
       type: Array,
-      default: []
+      default(){
+        return[]
+      }
     },
     inv: {
       type: Number,
@@ -61,6 +63,11 @@ export default {
         return 0;
       } else {
         return this.nowIndex;
+      }
+    },
+    transitonStyle(){
+      return{
+        transform:"translate3d("+-this.imgWidth*(this.nowIndex+1)+"px,0,0)"
       }
     }
   },
@@ -175,7 +182,7 @@ export default {
 }
 
 .slideTransition {
-  transition: left 1s ease;
+  transition: all 1s ease;
 }
 .slide-img > ul > li {
   overflow: hidden;

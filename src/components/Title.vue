@@ -2,15 +2,13 @@
   <div class="title">
     <div class="left">
       <div class="line"></div>
+      <div class="point"></div>
     </div>
     <div class="text">
-      <p>
-
-      {{msg}}
-
-      </p>
+      <p> <slot name='icon'></slot> {{msg}}</p>
       </div>
     <div class="right">
+      <div class="point"></div>
       <div class="line"></div>
     </div>
   </div>
@@ -28,6 +26,7 @@ export default {
 </script>
 
 <style lang="stylus">
+title-color = rgba(0, 150, 136, 0.4)
 .title
   display flex
   font-size 0
@@ -40,7 +39,14 @@ export default {
       width 90%
       height 0
       margin-right 10px
-      border-top 1px solid rgba(0,150,136,0.4)
+      border-top 1px solid title-color
+    .point
+      position absolute
+      bottom 14px
+      right 0
+      height 0
+      width 4px
+      border-top 4px solid  title-color
   .right
     flex 1
     position relative
@@ -48,7 +54,14 @@ export default {
       width 90%
       height 0
       margin-left 10px
-      border-top 1px solid rgba(0,150,136,0.4)
+      border-top 1px solid title-color
+    .point
+      position absolute
+      bottom 14px
+      left  0
+      height 0
+      width 4px
+      border-top 4px solid  title-color
   .text
     flex 0 0 120px
     font-size 16px
@@ -57,7 +70,5 @@ export default {
       position relative
       top -8px
       font-weight 500
-      color rgba(0,150,136,0.6)
-  .icon
-    color #e4393c    
+      color title-color
 </style>

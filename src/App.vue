@@ -1,5 +1,14 @@
 <template>
   <div id="app">
+    <div class="top">
+      <div class="icon-wrapper">
+        <span v-if="state.nowIndex==='Index'" class="icon icon-menu"></span>
+        <span v-else class="icon icon-back"></span>
+      </div>
+      <div class="right">
+        <p class="text">{{title}}</p>
+      </div>
+    </div>
     <div class="content">
         <keep-alive>
           <router-view/>
@@ -28,15 +37,72 @@
 
 <script>
 export default {
-  name: "app"
+  name: "app",
+  data(){
+    return{
+      goods:[],
+      state: {
+        nowIndex:'Index'
+      },
+    }
+  },
+  computed:{
+    title(){
+      switch(this.state.nowIndex){
+        case 'Index': return "合鑫泰移动商城"
+        case 'Cart' : return "购物车"
+        case 'Me' : return  "个人中心"
+        case 'About':return '关于合鑫泰'
+      }
+    }
+  },
+  created () {
+    this.$http.get('/api/goods').then(res=>{
+      this.goods=res.data;
+    })
+  },
+  watch: {
+    $route(){
+      this.state.nowIndex=this.$route.name;
+    }
+  }
 };
 </script>
 
 <style lang='stylus'>
+  .top
+    position absolute
+    top 0
+    z-index 10
+    width 100%
+    display flex
+    height 40px
+    background #009688
+    font-size 0
+    .icon-wrapper
+      position absolute
+      left 0
+      color #fff
+      padding-top 8px
+      padding-left 10px
+      .icon
+        font-size 24px
+        line-height 24px
+    .right
+      flex 1
+      padding 0 20px
+      .text
+        width 100%
+        text-align center
+        padding 10px 20px 10px 0
+        font-size 16px
+        line-height 20px
+        color #fff
 .content
   width 100%
   height 100%
   padding-bottom 55px
+  overflow hidden
 .nav-footer
   display flex 
   position fixed

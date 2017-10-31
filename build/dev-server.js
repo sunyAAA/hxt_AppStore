@@ -25,6 +25,7 @@ const app = express()
 var appData = require('../data.json');              //引入mock数据
 var goods = appData.goods;                          //构建响应对象
 var slides = appData.slides;
+var hot = appData.hot;
 var apiRoutes = express.Router();                   //实例化一个响应源
 apiRoutes.get('/goods', function (req, res) {       //设置API
 	res.json({
@@ -37,6 +38,14 @@ apiRoutes.get('/slides',function(req,res){
     {
       errno:0,
       data:slides
+    }
+  )
+});
+apiRoutes.get('/hot',function(req,res){
+  res.json(
+    {
+      errno:0,
+      data:hot
     }
   )
 });

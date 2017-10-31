@@ -79,7 +79,7 @@
       // 保证在DOM渲染完毕后初始化better-scroll
       setTimeout(() => {
         this._initScroll()
-      }, 20)
+      }, 250)
     },
     methods: {
       _initScroll() {

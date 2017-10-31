@@ -6,11 +6,7 @@
           <v-title :msg='"热销商品"'>
             <span class="icon icon-hot" slot='icon'></span> 
           </v-title>
-          <showcase></showcase>
-          <showcase></showcase>
-          <showcase></showcase>
-          <showcase></showcase>
-          <showcase></showcase>
+          <showcase v-for='(item,index) in hot' :goods='item' :key='index'></showcase>
         </div>
       </scroll>
   </div>
@@ -31,6 +27,7 @@ export default {
   data() {
     return {
       slides: [],
+      hot:[],
       search: ""
     };
   },
@@ -38,6 +35,9 @@ export default {
     this.$http.get("/api/slides").then(res => {
       this.slides = res.data.data;
     });
+    this.$http.get('/api/hot').then(res=>{
+      this.hot = res.data.data;
+    })
   },
 };
 </script>

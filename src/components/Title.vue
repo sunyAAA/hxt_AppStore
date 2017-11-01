@@ -64,10 +64,10 @@ title-color = rgba(0, 150, 136, 0.4)
       border-top 4px solid  title-color
   .text
     flex 0 0 120px
-    font-size 16px
     p
       text-align center
       position relative
+      font-size 14px
       top -8px
       font-weight 500
       color title-color

@@ -1,14 +1,46 @@
 <template>
   <div class="index">
-      <scroll class="wrapper">
+      <scroll class="wrapper" :click='true'>
         <div class="slot">
           <slide :slides='slides' :maxwidth='906'></slide>
+          <div class="icon-group">
+            <div class="icon-item">
+              <img src="../../static/icon/icon-1.jpg" alt="">
+              <p class="text">五万亩自有稻田</p>
+            </div>
+            <div class="icon-item">
+              <img src="../../static/icon/icon-2.jpg" alt="">
+              <p class="text">15°C恒温存储</p>
+            </div>
+            <div class="icon-item">
+              <img src="../../static/icon/icon-3.jpg" alt="">
+              <p class="text">全城极速配送</p>
+            </div>
+          </div>
           <v-title :msg='"热销商品"'>
             <span class="icon icon-hot" slot='icon'></span> 
           </v-title>
-          <showcase v-for='(item,index) in hot' :goods='item' :key='index'></showcase>
+          <div v-if='hot.length' class="goodswrapper" style="display:flex">
+            <showcase :goods='hot[0]' @go-detail='showDetail'>
+              <span class="icon-hot" slot='icon'></span>
+            </showcase>
+            <showcase :goods='hot[1]' @go-detail='showDetail'>
+               <span class="icon-hot" slot='icon'></span>
+            </showcase>
+          </div>
+          <div class="goodswrapper" style="display:flex">
+            <showcase :goods='hot[0]' @go-detail='showDetail'>
+              <span class="icon-hot" slot='icon'></span>
+            </showcase>
+            <showcase :goods='hot[1]' @go-detail='showDetail'>
+               <span class="icon-hot" slot='icon'></span>
+            </showcase>
+          </div>
         </div>
       </scroll>
+        <transition name='slide'>
+          <detail class="detail" :goods='detailData' v-if='state.isShowDetail'></detail>
+        </transition>
   </div>
 </template>
 
@@ -17,28 +49,48 @@ import Slide from "../components/Slide";
 import VTitle from "../components/Title";
 import Showcase from "../components/Showcase";
 import Scroll from "../components/base/scroll";
+import Detail from "../pages/detail";
 export default {
   components: {
     Slide,
     VTitle,
     Showcase,
-    Scroll
+    Scroll,
+    Detail
+  },
+  props: {
+    slides: {
+      type: Array,
+      default() {
+        return [];
+      }
+    },
+    hot: {
+      type: Array
+    },
+    goods: {
+      type: Object
+    },
+    state: {
+      type: Object,
+      default() {
+        return {
+          isShowDetail: false
+        };
+      }
+    }
   },
   data() {
     return {
-      slides: [],
-      hot:[],
-      search: ""
+      detailData: {}
     };
   },
-  created() {
-    this.$http.get("/api/slides").then(res => {
-      this.slides = res.data.data;
-    });
-    this.$http.get('/api/hot').then(res=>{
-      this.hot = res.data.data;
-    })
-  },
+  methods: {
+    showDetail(obj) {
+      (this.detailData = obj), (this.state.isShowDetail = true);
+      this.$emit("detail");
+    }
+  }
 };
 </script>
 
@@ -53,32 +105,24 @@ export default {
     overflow hidden
     top 40px
     bottom 50px
-  .top
-    position absolute
-    top 0
-    z-index 10
-    width 100%
-    display flex
-    height 40px
-    background #009688
-    font-size 0
-    .menu-wrapper
-      flex 0 0 50px
-      color #fff
-      padding-top 8px
-      padding-left 10px
-      .icon
-        font-size 24px
-        line-height 24px
-    .right
-      flex 1
-      padding-top 8px
-      padding-right 20px
-      .search
-        width 100%
-        height 24px
-        border 0
-        border-radius 24px
+    .goodswrapper
+      margin-bottom 15px
+    .icon-group
+      display flex
+      font-size 0
+      margin 20px 0 10px 0
+      .icon-item
+        flex 1
         text-align center
+        img
+          width 30%
+        .text
+          font-size 1rem
+          line-height 20px
+          padding-top 5px
+  .slide-enter-active, .slide-leave-active
+    transition all 0.5s ease
+  .slide-enter, .slide-leave-active
+    transform translateX(100%)
 </style>
 

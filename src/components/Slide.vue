@@ -113,7 +113,7 @@ export default {
       }
     },
     slides(cur,old) {
-      if (cur!=old) {
+      if (!old.length) {
         this.$nextTick(() => {
           this.imgWidth = this.$refs.slideViewPort.clientWidth;
           this.hammerEle = new Hammer(this.$refs.slideViewPort);

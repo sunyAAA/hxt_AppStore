@@ -72,14 +72,14 @@
        */
       refreshDelay: {
         type: Number,
-        default: 20
+        default: 120
       }
     },
     mounted() {
       // 保证在DOM渲染完毕后初始化better-scroll
       setTimeout(() => {
         this._initScroll()
-      }, 250)
+      }, 500)
     },
     methods: {
       _initScroll() {

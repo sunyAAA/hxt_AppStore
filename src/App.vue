@@ -3,7 +3,7 @@
     <div class="top">
       <div class="icon-wrapper">
         <span v-if="state.nowIndex==='Index'" class="icon icon-menu"></span>
-        <span v-else class="icon icon-back"></span>
+        <span v-else class="icon icon-back" @click='goIndex'></span>
       </div>
       <div class="right">
         <p class="text">{{title}}</p>
@@ -11,7 +11,7 @@
     </div>
     <div class="content">
         <keep-alive>
-          <router-view/>
+          <router-view :goods='goods' :slides='slides' :hot='hot' :state='state' @detail='changeTitle'/>
         </keep-alive>
     </div>
     <footer class="nav-footer">
@@ -40,9 +40,15 @@ export default {
   name: "app",
   data(){
     return{
-      goods:[],
+      hot:[],
+      slides:[],
+      goods:{},
+      selectList:[],
+      isShowDetail:false,
+      detailData:{},
       state: {
-        nowIndex:'Index'
+        nowIndex:'Index',
+        isShowDetail:'false'
       },
     }
   },
@@ -53,6 +59,7 @@ export default {
         case 'Cart' : return "购物车"
         case 'Me' : return  "个人中心"
         case 'About':return '关于合鑫泰'
+        case 'Detail':return '商品详情'
       }
     }
   },
@@ -60,10 +67,26 @@ export default {
     this.$http.get('/api/goods').then(res=>{
       this.goods=res.data;
     })
+    this.$http.get("/api/slides").then(res => {
+      this.slides = res.data.data;
+    });
+    this.$http.get('/api/hot').then(res=>{
+      this.hot = res.data.data;
+    })
+
   },
   watch: {
     $route(){
       this.state.nowIndex=this.$route.name;
+    }
+  },
+  methods:{
+    changeTitle(){
+      this.state.nowIndex='Detail'
+    },
+    goIndex(){
+      this.state.nowIndex='Index'
+      this.state.isShowDetail=false
     }
   }
 };

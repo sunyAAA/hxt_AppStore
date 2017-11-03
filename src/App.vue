@@ -3,24 +3,22 @@
     <div class="top">
       <div class="icon-wrapper">
         <span v-if="state.nowIndex==='Index'" class="icon icon-menu"></span>
-        <span v-else class="icon icon-back" @click='goIndex'></span>
+        <span v-else class="icon icon-pull_left" @click='goIndex'></span>
       </div>
       <div class="right">
         <p class="text">{{title}}</p>
       </div>
     </div>
     <div class="content">
-        <keep-alive>
-          <router-view :goods='goods' :slides='slides' :hot='hot' :state='state' @detail='changeTitle'/>
-        </keep-alive>
+      <router-view :goods='goods' :slides='slides' :hot='hot' :state='state' :selectGoods='selectGoods' @detail='changeTitle'/>
     </div>
     <footer class="nav-footer">
       <router-link tag="div" to='/index' class="nav-item" active-class="on">
         <span class="icon icon-home"></span>
         <p class="text">首页</p>
       </router-link> 
-      <router-link tag="div" to='/cart' class="nav-item" active-class="on">
-        <span class="icon icon-cart"></span>
+      <router-link tag="div" to='/cart' class="nav-item cart" active-class="on">
+        <span class="icon icon-cart"><span class="count" v-if='count>0'>{{count}}</span></span>
         <p class="text">购物车</p>
       </router-link> 
       <router-link tag="div" to='/me' class="nav-item" active-class="on">
@@ -50,6 +48,7 @@ export default {
         nowIndex:'Index',
         isShowDetail:'false'
       },
+      selectGoods:[]
     }
   },
   computed:{
@@ -61,6 +60,13 @@ export default {
         case 'About':return '关于合鑫泰'
         case 'Detail':return '商品详情'
       }
+    },
+    count(){
+      let total=0
+      this.selectGoods.forEach(item=>{
+        total+=item.count
+      })
+      return total
     }
   },
   created () {
@@ -78,6 +84,9 @@ export default {
   watch: {
     $route(){
       this.state.nowIndex=this.$route.name;
+      if(this.$route.name!='Index'){
+        this.state.isShowDetail=false
+      }
     }
   },
   methods:{
@@ -88,11 +97,12 @@ export default {
       this.state.nowIndex='Index'
       this.state.isShowDetail=false
     }
-  }
+  },
 };
 </script>
 
 <style lang='stylus'>
+@import "./common/stylus/base.styl";
   .top
     position absolute
     top 0
@@ -153,4 +163,21 @@ export default {
       margin-top 2px
       font-size 12px
       color rgba(0,0,0,0.8)
+  .cart
+    .icon
+      position relative
+      .count 
+        position absolute
+        display inline-block
+        right -10px
+        top -8px
+        width 16px
+        height 16px
+        text-align center
+        font-size 1rem
+        color #fff
+        border-radius 8px
+        line-height 16px
+        background #e4393c
+
 </style>

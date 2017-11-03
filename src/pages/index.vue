@@ -1,6 +1,7 @@
 <template>
   <div class="index">
-      <scroll class="wrapper" :click='true'>
+      <transition name='slide' >
+        <scroll class="wrapper" :click='true'  v-if='state.isShowDetail!=true'>
         <div class="slot">
           <slide :slides='slides' :maxwidth='906'></slide>
           <div class="icon-group">
@@ -38,9 +39,8 @@
           </div>
         </div>
       </scroll>
-        <transition name='slide'>
-          <detail class="detail" :goods='detailData' v-if='state.isShowDetail'></detail>
-        </transition>
+      <detail class="detail" v-else :goods='detailData'  :state='state' :selectGoods='selectGoods'></detail>
+      </transition>
   </div>
 </template>
 
@@ -78,6 +78,9 @@ export default {
           isShowDetail: false
         };
       }
+    },
+    selectGoods:{
+      type:Array
     }
   },
   data() {

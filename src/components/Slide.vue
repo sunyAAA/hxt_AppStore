@@ -114,26 +114,28 @@ export default {
     },
     slides(cur,old) {
       if (!old.length) {
-        this.$nextTick(() => {
-          this.imgWidth = this.$refs.slideViewPort.clientWidth;
-          this.hammerEle = new Hammer(this.$refs.slideViewPort);
-          this.hammerEle.on("swipeleft", ()=> {
-            this.throttle(()=>{
-               this.nowIndex++
-            })
-           
-          });
-          this.hammerEle.on("swiperight", ()=> {
-           this.throttle(()=>{
-               this.nowIndex--
-            })
-          });
-        });
+   
       }
     }
   },
   mounted() {
-     this.runInv();
+    this.runInv();
+    this.$nextTick(() => {
+    this.imgWidth = this.$refs.slideViewPort.clientWidth;
+    this.hammerEle = new Hammer(this.$refs.slideViewPort);
+    this.hammerEle.on("swipeleft", ()=> {
+      this.throttle(()=>{
+          this.nowIndex++
+      })
+      
+    });
+    this.hammerEle.on("swiperight", ()=> {
+      this.throttle(()=>{
+          this.nowIndex--
+      })
+    });
+  });
+     
   }
 };
 </script>
@@ -170,6 +172,8 @@ export default {
 }
 .slide-img {
   width: 100%;
+  margin: 0;
+  padding: 0;
   min-height: 192px;
   overflow: hidden;
 }
@@ -187,5 +191,7 @@ export default {
 .slide-img > ul > li {
   overflow: hidden;
   float: left;
+  padding: 0;
+  margin:0
 }
 </style>

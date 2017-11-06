@@ -45,7 +45,7 @@
             </div>
           </transition>
             <div class="rating--wrapper" v-if="!toggle">
-              <rating v-for='item in goods.ratings' :rating='item'></rating>
+              <rating v-for='(item,index) in goods.ratings' :rating='item' :key='index'></rating>
             </div>
         </div>
         
@@ -100,7 +100,7 @@ export default {
 };
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
 @import '../common/stylus/base.styl'
 .wrapper
   position absolute
@@ -202,8 +202,10 @@ export default {
           &.on
             color #fff
             background dark 
-      img
-        width 100%      
+      .info
+        font-size 0
+        img
+          width 100%      
       .show-enter-active, .show-leave-active
         transition all 0.5s ease
       .show-enter, .show-leave-active

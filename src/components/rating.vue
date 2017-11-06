@@ -40,7 +40,7 @@ export default {
 }
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
 @import "../common/stylus/base.styl";
 .rating
   position relative
@@ -59,6 +59,8 @@ export default {
     top 10px
     width 40px
     height 40px
+    img
+      width 100%
     .name
       font-size 1.2rem
       padding-top 10px

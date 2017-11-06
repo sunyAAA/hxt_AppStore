@@ -2,7 +2,7 @@
   <div id="app">
     <div class="top">
       <div class="icon-wrapper">
-        <span v-if="state.nowIndex==='Index'" class="icon icon-menu"></span>
+        <span v-if="state.nowIndex==='Index'" class="icon icon-menu" @click='goMenu'></span>
         <span v-else class="icon icon-pull_left" @click='goIndex'></span>
       </div>
       <div class="right">
@@ -10,7 +10,12 @@
       </div>
     </div>
     <div class="content">
-      <router-view :goods='goods' :slides='slides' :hot='hot' :state='state' :selectGoods='selectGoods' @detail='changeTitle'/>
+      <keep-alive>
+        <router-view 
+        :goods='goods' :slides='slides' :hot='hot' 
+        :state='state' :selectGoods='selectGoods' :scrollIndex='scrollIndex'
+        @detail='changeTitle'/>
+      </keep-alive>
     </div>
     <footer class="nav-footer">
       <router-link tag="div" to='/index' class="nav-item" active-class="on">
@@ -30,25 +35,41 @@
         <p class="text">关于</p>
       </router-link> 
     </footer>
+    <transition name='slide'>
+      <v-menu :goods='goods' v-if='showMenu' @scroll-change='scrollTo' @close-menu='closeMenu'></v-menu>
+    </transition>
+    
   </div>
 </template>
 
 <script>
+import VMenu from "./components/Menu"
 export default {
   name: "app",
+  components: {
+    VMenu
+  },
   data(){
     return{
+      /**
+       * 数据
+       */
       hot:[],
       slides:[],
       goods:{},
       selectList:[],
+      /**
+       * 状态控制
+       */
       isShowDetail:false,
       detailData:{},
       state: {
         nowIndex:'Index',
         isShowDetail:'false'
       },
-      selectGoods:[]
+      selectGoods:[],
+      showMenu:false,
+      scrollIndex:-1
     }
   },
   computed:{
@@ -86,6 +107,7 @@ export default {
       this.state.nowIndex=this.$route.name;
       if(this.$route.name!='Index'){
         this.state.isShowDetail=false
+        this.showMenu=false
       }
     }
   },
@@ -96,6 +118,15 @@ export default {
     goIndex(){
       this.state.nowIndex='Index'
       this.state.isShowDetail=false
+    },
+    goMenu(){
+      this.showMenu=!this.showMenu;
+    },
+    scrollTo(index){
+      this.scrollIndex=index
+    },
+    closeMenu(){
+      this.showMenu=false
     }
   },
 };
@@ -179,5 +210,9 @@ export default {
         border-radius 8px
         line-height 16px
         background #e4393c
+.slide-enter-active, .slide-leave-active
+  transition all 0.4s ease
+.slide-enter, .slide-leave-active
+  transform translateX(-100%)        
 
 </style>

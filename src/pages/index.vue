@@ -62,7 +62,6 @@ import VTitle from "../components/Title";
 import Showcase from "../components/Showcase";
 import Scroll from "../components/base/scroll";
 import Detail from "../pages/detail";
-import LoadBtn from "../components/lookMore";
 export default {
   components: {
     Slide,
@@ -70,7 +69,6 @@ export default {
     Showcase,
     Scroll,
     Detail,
-    LoadBtn
   },
   props: {
     slides: {

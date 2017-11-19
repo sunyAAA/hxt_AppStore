@@ -14,7 +14,7 @@
         <router-view 
         :goods='goods' :slides='slides' :hot='hot' 
         :state='state' :selectGoods='selectGoods' :scrollIndex='scrollIndex'
-        @detail='changeTitle'/>
+        @detail='changeTitle'/></router-view>
       </keep-alive>
     </div>
     <footer class="nav-footer">
@@ -135,7 +135,7 @@ export default {
 <style lang='stylus'>
 @import "./common/stylus/base.styl";
   .top
-    position absolute
+    position fixed
     top 0
     z-index 10
     width 100%

@@ -1,5 +1,4 @@
 <template>
-  <scroll class="wrapper">
       <div class="detail">
           <div class="desc">
             <h3 class="title"><span class="icon icon-rice_1"></span>{{goods.name}}</h3>
@@ -37,11 +36,11 @@
         <div class="tab">
           <div class="tab-nav">
             <div class="nav-item" :class="{on:toggle}" @click='tabToggle'>详情</div>
-            <div class="nav-item" :class="{on:!toggle}" @click='tabToggle'>评价({{goods.ratings.length}})</div>
+            <div v-if='goods.ratings' class="nav-item" :class="{on:!toggle}" @click='tabToggle'>评价({{goods.ratings.length}})</div>
           </div>
           <transition name='show' >
             <div class="info" v-if="toggle">
-              <img v-for='(item,index) in goods.info' :src="item" :key='index'>
+              <img v-for='(item,index) in goods.info' :src='item' class='img-hook' :key='index' @load='imgOnload'>
             </div>
           </transition>
             <div class="rating--wrapper" v-if="!toggle">
@@ -50,7 +49,6 @@
         </div>
         
       </div>
-  </scroll>
   
 </template>
 
@@ -68,6 +66,9 @@ export default {
     },
     selectGoods:{
       type:Array
+    },
+    state:{
+      type:Object
     }
   },
   data(){
@@ -78,7 +79,9 @@ export default {
         image:'',
         count:1
       },
-      toggle:true
+      toggle:true,
+      imgCount:0,
+      loadState:{doRefresh:false}
     }
   },
   methods:{
@@ -87,27 +90,39 @@ export default {
     },
     tabToggle(){
       this.toggle=!this.toggle;
+      this.refresh()
     },
     push(){
       this.selectGoods.push(this.selected)
+    },
+    imgOnload(){
+      this.imgCount++
+    },
+    refresh(){
+      this.loadState.doRefresh = true 
+    },
+    complete(){
+      this.loadState.doRefresh = false;
     }
   },
   created () {
     this.selected.name = this.goods.name;
     this.selected.image = this.goods.image;
     this.selected.price = this.goods.price;
+  },
+  watch:{
+    imgCount(){
+      if(this.imgCount==this.goods.info.length){
+        console.log('加载完毕')
+          this.refresh()
+        }
+    }
   }
 };
 </script>
 
 <style lang="stylus" scoped>
 @import '../common/stylus/base.styl'
-.wrapper
-  position absolute
-  width 100%
-  overflow hidden
-  top 40px
-  bottom 50px
   .detail
     padding 15px
     background #fff

@@ -78,9 +78,14 @@ export default {
       type: Number,
       default: -1
     },
-    scrollHeight:{
-      type:Array,
-      default:[]
+    scrollHeight: {
+      type: Array,
+      default() {
+        return [];
+      }
+    },
+    loadState: {
+      type: Object
     }
   },
   mounted() {
@@ -113,6 +118,7 @@ export default {
         this.scroll.on("scrollEnd", () => {
           // 滚动到底部
           if (this.scroll.y <= this.scroll.maxScrollY + 50) {
+            this.refresh();
             this.$emit("scrollToEnd");
           }
         });
@@ -163,11 +169,23 @@ export default {
         this.refresh();
       }, this.refreshDelay);
     },
-    scrollIndex(cur){
-      if(cur===-1){
-        return
+    scrollIndex(cur) {
+      if (cur === -1) {
+        return;
       }
-      this.scroll.scrollTo(0,-this.scrollHeight[this.scrollIndex],500)
+      this.scroll.scrollTo(0, -this.scrollHeight[this.scrollIndex], 500);
+    },
+    loadState: {
+      handler() {
+        if (this.loadState.doRefresh) {
+          this.refresh();
+          console.log('触发')
+          setTimeout(()=>{
+            this.$emit('done');
+          },100)
+        }
+      },
+      deep: true
     }
   }
 };

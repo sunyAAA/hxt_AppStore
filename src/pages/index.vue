@@ -1,8 +1,9 @@
 <template>
   <div class="index">
-        <scroll class="wrapper" :click='true' 
-        :scrollIndex='scrollIndex' :scrollHeight='scrollHeight'
-        v-show='state.isShowDetail!=true'>
+      <scroll class="wrapper" :click='true' 
+      :scrollIndex='scrollIndex' :scrollHeight='scrollHeight'
+      :pullup='true'
+      v-show='state.isShowDetail!=true'>
         <div class="slot">
           <slide :slides='slides' :maxwidth='906'></slide>
           <div class="icon-group">
@@ -23,10 +24,10 @@
             <span class="icon icon-hot" slot='icon'></span> 
           </v-title>
           <div class="goodswrapper" style="display:flex">
-            <showcase :goods='hot[0]' @go-detail='showDetail'>
+            <showcase  :goods='hot[0]' @go-detail='showDetail'>
               <span class="icon-hot" slot='icon'></span>
             </showcase>
-            <showcase :goods='hot[1]' @go-detail='showDetail'>
+            <showcase  :goods='hot[1]' @go-detail='showDetail'>
                <span class="icon-hot" slot='icon'></span>
             </showcase>
           </div>
@@ -50,8 +51,8 @@
           </div>
         </div>
       </scroll>
-      <transition name='slide' >
-       <detail class="detail" v-if='state.isShowDetail' :goods='detailData'  :state='state' :selectGoods='selectGoods'></detail>
+      <transition name='slide'>
+       <detail class="detail" v-if='state.isShowDetail==true' :goods='detailData'  :state='state' :selectGoods='selectGoods'></detail>
       </transition>
   </div>
 </template>
@@ -84,12 +85,7 @@ export default {
       type: Object
     },
     state: {
-      type: Object,
-      default() {
-        return {
-          isShowDetail: false
-        };
-      }
+      type: Object
     },
     selectGoods: {
       type: Array

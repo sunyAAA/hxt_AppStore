@@ -18,6 +18,9 @@
             min: {
                 type: Number,
                 default: 1
+            },
+            now:{
+                type: Number,
             }
         },
         watch:{
@@ -53,6 +56,11 @@
                     return
                 }
                 this.number++
+            }
+        },
+        created () {
+            if(this.now){
+                this.number = this.now
             }
         }
     }

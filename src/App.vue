@@ -118,6 +118,9 @@ export default {
     goIndex(){
       this.state.nowIndex='Index'
       this.state.isShowDetail=false
+      if(this.$route.name!='index'){
+        this.$router.push('index')
+      }
     },
     goMenu(){
       this.showMenu=!this.showMenu;

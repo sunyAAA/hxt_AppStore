@@ -21,11 +21,18 @@
             },
             now:{
                 type: Number,
+            },
+            index:{
+                type: Number
             }
         },
         watch:{
           number(){
-              this.$emit('on-change',this.number)
+              if(this.index!=undefined){
+                   this.$emit('on-change',this.index,this.number)
+              }else{
+                this.$emit('on-change',this.number)
+              }
           }
         },
         data(){

@@ -24,12 +24,12 @@
           </div>
         </div>
         <div class="price-wrapper">
-          <p></span>上新价：<span class="price">￥{{goods.price}}
+          <p></span>上新价：<span class="price">￥{{goods.price.toFixed(2)}}
             </span><selection class="select" @on-change='selectChange'></selection>
           </p>
         </div>
         <div class="price-info">
-          <p>小计：<span class="price">￥{{(selected.price*selected.count).toFixed(1)}}</span>
+          <p>小计：<span class="price">￥{{(selected.price*selected.count).toFixed(2)}}</span>
           <button class="btn" @click='push'>加入购物车</button>
         </p>
         </div>
@@ -93,6 +93,12 @@ export default {
       this.refresh()
     },
     push(){
+      for(let item of this.selectGoods){
+        if(item.name === this.selected.name){
+          item.count+= this.selected.count
+          return
+        }
+      }
       this.selectGoods.push(this.selected)
     },
     imgOnload(){

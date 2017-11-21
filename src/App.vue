@@ -10,12 +10,10 @@
       </div>
     </div>
     <div class="content">
-      <keep-alive>
         <router-view 
         :goods='goods' :slides='slides' :hot='hot' 
         :state='state' :selectGoods='selectGoods' :scrollIndex='scrollIndex'
         @detail='changeTitle'/></router-view>
-      </keep-alive>
     </div>
     <footer class="nav-footer">
       <router-link tag="div" to='/index' class="nav-item" active-class="on">
@@ -204,7 +202,7 @@ export default {
         position absolute
         display inline-block
         right -10px
-        top -8px
+        top -2px
         width 16px
         height 16px
         text-align center
@@ -212,7 +210,7 @@ export default {
         color #fff
         border-radius 8px
         line-height 16px
-        background #e4393c
+        background #e4393c      
 .slide-enter-active, .slide-leave-active
   transition all 0.4s ease
 .slide-enter, .slide-leave-active

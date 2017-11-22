@@ -130,7 +130,7 @@ export default {
 <style lang="stylus" scoped>
 @import '../common/stylus/base.styl'
   .detail
-    padding 15px
+    padding 50px 15px 0 15px
     background #fff
     .header
       font-size 0

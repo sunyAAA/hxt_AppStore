@@ -22,6 +22,13 @@ export default new Router({
       }
     },
     {
+      path: '/myPage',
+      name: 'MyPage',
+      component(resolve){
+        require(['../pages/myPage'], resolve)
+      }
+    },
+    {
       path: '/about',
       name: 'About',
       component(resolve){

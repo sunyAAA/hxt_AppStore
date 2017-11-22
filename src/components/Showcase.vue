@@ -11,7 +11,6 @@
     </div>
     <div class="pricewrapper">
       <span class="price">￥{{goods.price}}</span>
-      <span class="icon icon-cart-add"></span>
     </div>
   </div>
 </template>
@@ -59,11 +58,11 @@ export default {
   .pricewrapper
     position relative
     padding-bottom 10px
+    text-align center
     .price
-      padding-left 10px
       color #e4393c
       font-size 1.2rem
-      font-weight 450
+      font-weight 600
     .icon
       font-size 2.5rem
       color #e4393c

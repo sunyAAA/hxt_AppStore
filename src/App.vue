@@ -24,7 +24,7 @@
         <span class="icon icon-cart"><span class="count" v-if='count>0'>{{count}}</span></span>
         <p class="text">购物车</p>
       </router-link> 
-      <router-link tag="div" to='/me' class="nav-item" active-class="on">
+      <router-link tag="div" to='/myPage' class="nav-item" active-class="on">
         <span class="icon icon-order"></span>
         <p class="text">个人中心</p>
       </router-link> 
@@ -75,7 +75,7 @@ export default {
       switch(this.state.nowIndex){
         case 'Index': return "合鑫泰移动商城"
         case 'Cart' : return "购物车"
-        case 'Me' : return  "个人中心"
+        case 'MyPage' : return  "个人中心"
         case 'About':return '关于合鑫泰'
         case 'Detail':return '商品详情'
       }
@@ -133,7 +133,7 @@ export default {
 };
 </script>
 
-<style lang='stylus'>
+<style lang='stylus' scoped>
 @import "./common/stylus/base.styl";
   .top
     position fixed

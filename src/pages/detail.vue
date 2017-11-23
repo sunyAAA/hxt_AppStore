@@ -29,8 +29,8 @@
           </p>
         </div>
         <div class="price-info">
-          <p>小计：<span class="price">￥{{(selected.price*selected.count).toFixed(2)}}</span>
-          <button class="btn" @click='push($event)'>加入购物车</button>
+          <p>小计：<span class="price">￥{{(price*count).toFixed(2)}}</span>
+          <button class="btn" @click='push'>加入购物车</button>
         </p>
         </div>
         <div class="tab">
@@ -73,12 +73,10 @@ export default {
   },
   data(){
     return{
-      selected:{
-        name:'',
-        price:'',
-        image:'',
-        count:1
-      },
+      name:'',
+      price:'',
+      count:1,
+      imgae:'',
       toggle:true,
       imgCount:0,
       loadState:{doRefresh:false}
@@ -86,7 +84,7 @@ export default {
   },
   methods:{
     selectChange(count){
-      this.selected.count = count
+      this.count = count
     },
     tabToggle(){
       this.toggle=!this.toggle;
@@ -94,13 +92,18 @@ export default {
     },
     push(e){
       for(let item of this.selectGoods){
-        if(item.name === this.selected.name){
-          item.count+= this.selected.count
+        if(item.name === this.name){
+          item.count+= this.count
           return
         }
       }
-      this.selectGoods.push(this.selected);
-      this.$emit('on-drop',e.target)
+      let obj = {
+        name : this.goods.name,
+        image :this.goods.image,
+        count:this.count,
+        price:this.goods.price
+      }
+      this.selectGoods.push(obj);
     },
     imgOnload(){
       this.imgCount++
@@ -113,9 +116,9 @@ export default {
     },
   },
   created () {
-    this.selected.name = this.goods.name;
-    this.selected.image = this.goods.image;
-    this.selected.price = this.goods.price;
+    this.name = this.goods.name;
+    this.image = this.goods.image;
+    this.price = this.goods.price;
   },
   watch:{
     imgCount(){

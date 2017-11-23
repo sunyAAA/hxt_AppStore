@@ -28,7 +28,7 @@
         <span class="icon icon-order"></span>
         <p class="text">个人中心</p>
       </router-link> 
-      <router-link tag="div" to='/about' class="nav-item" active-class="on">
+      <router-link tag="div" to='/about' class="nav-item" active-class="on" ref='cart'>
         <span class="icon icon-star"></span>
         <p class="text">关于</p>
       </router-link> 
@@ -36,7 +36,6 @@
     <transition name='slide'>
       <v-menu :goods='goods' v-if='showMenu' @scroll-change='scrollTo' @close-menu='closeMenu'></v-menu>
     </transition>
-    
   </div>
 </template>
 
@@ -67,7 +66,11 @@ export default {
       },
       selectGoods:[],
       showMenu:false,
-      scrollIndex:-1
+      scrollIndex:-1,
+      ball:{
+        show:false,
+        el:null,
+      }
     }
   },
   computed:{
@@ -98,7 +101,6 @@ export default {
     this.$http.get('/api/hot').then(res=>{
       this.hot = res.data.data;
     })
-
   },
   watch: {
     $route(){
@@ -129,7 +131,7 @@ export default {
     closeMenu(){
       this.showMenu=false
     }
-  },
+  }
 };
 </script>
 
@@ -210,7 +212,20 @@ export default {
         color #fff
         border-radius 8px
         line-height 16px
-        background #e4393c      
+        background #e4393c   
+.ball
+  position fixed
+  left 37%
+  bottom 30px
+  z-index 200
+  .inner
+    width 16px
+    height 16px
+    border-radius 50%
+    background dark
+    transition all 1s 
+.drop-enter-active,.drop-leave-active
+  transition: all 1s            
 .slide-enter-active, .slide-leave-active
   transition all 0.4s ease
 .slide-enter, .slide-leave-active

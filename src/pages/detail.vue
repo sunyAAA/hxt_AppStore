@@ -30,7 +30,7 @@
         </div>
         <div class="price-info">
           <p>小计：<span class="price">￥{{(selected.price*selected.count).toFixed(2)}}</span>
-          <button class="btn" @click='push'>加入购物车</button>
+          <button class="btn" @click='push($event)'>加入购物车</button>
         </p>
         </div>
         <div class="tab">
@@ -92,14 +92,15 @@ export default {
       this.toggle=!this.toggle;
       this.refresh()
     },
-    push(){
+    push(e){
       for(let item of this.selectGoods){
         if(item.name === this.selected.name){
           item.count+= this.selected.count
           return
         }
       }
-      this.selectGoods.push(this.selected)
+      this.selectGoods.push(this.selected);
+      this.$emit('on-drop',e.target)
     },
     imgOnload(){
       this.imgCount++
@@ -109,7 +110,7 @@ export default {
     },
     complete(){
       this.loadState.doRefresh = false;
-    }
+    },
   },
   created () {
     this.selected.name = this.goods.name;

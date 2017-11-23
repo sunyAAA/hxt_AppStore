@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>抛物线测试用例</title>
+  <style>
+    .outer{
+      position: fixed;
+      transition: all 0.8s cubic-bezier(0.39,-0.4,0.83,0.23)
+    }
+    .inner{
+      width:50px;
+      height:50px; 
+      background-color:#ff6326; 
+      transition:all 0.8s linear 0s;
+    }
+  </style>
+</head>
+<body>
+  <button id='btn' onclick="fly()">click me </button>
+
+  <div class='outer'>
+    <div class='inner'>
+
+    </div>
+  </div>
+
+</body>
+<script>
+  function fly(){
+    let a = document.getElementsByClassName('outer')[0]
+    let b = document.getElementsByClassName('inner')[0]
+    console.log(a,b)
+    a.style.transform='translate3d(0,500px,0)';
+    b.style.transform='translate3d(600px,0,0)';
+  }
+</script>
+</html>

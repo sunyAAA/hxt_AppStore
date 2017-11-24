@@ -30,7 +30,10 @@
         </div>
         <div class="price-info">
           <p>小计：<span class="price">￥{{(price*count).toFixed(2)}}</span>
-          <button class="btn" @click='push'>加入购物车</button>
+          <button  class="btn" @click='push($event)' ref='btn' :disabled='ball.inTransition'>加入购物车</button>
+          <div class="ball" :class="'ball'+index" v-for='(item,index) in ball'>
+            <div class="inner" :class="'inner'+index"></div>
+          </div>
         </p>
         </div>
         <div class="tab">
@@ -47,7 +50,7 @@
               <rating v-for='(item,index) in goods.ratings' :rating='item' :key='index'></rating>
             </div>
         </div>
-        
+
       </div>
   
 </template>
@@ -79,7 +82,14 @@ export default {
       imgae:'',
       toggle:true,
       imgCount:0,
-      loadState:{doRefresh:false}
+      loadState:{doRefresh:false},
+      ball:[
+        {inTransition:false},
+        {inTransition:false},
+        {inTransition:false},
+        {inTransition:false},
+        {inTransition:false}
+      ]
     }
   },
   methods:{
@@ -90,7 +100,8 @@ export default {
       this.toggle=!this.toggle;
       this.refresh()
     },
-    push(e){
+    push(ev){
+      this.beforeDrop()
       for(let item of this.selectGoods){
         if(item.name === this.name){
           item.count+= this.count
@@ -114,6 +125,36 @@ export default {
     complete(){
       this.loadState.doRefresh = false;
     },
+    drop(index){
+      console.log(index)
+      let rect = this.$refs['btn'].getBoundingClientRect();
+      let x = -(rect.left-window.innerWidth*2/8);
+      let y = window.innerHeight-rect.bottom;
+      let ball = document.getElementsByClassName('ball'+index)[0]
+      let inner = document.getElementsByClassName('inner'+index)[0]
+      inner.style.opacity='1'
+      ball.style.transform =`translate3d(0,${y}px,0)`
+      inner.style.transform =`translate3d(${x}px,0,0)`
+      ball.addEventListener('transitionend',()=>{
+        let ball = document.getElementsByClassName('ball'+index)[0]
+        let inner = document.getElementsByClassName('inner'+index)[0]
+        inner.style.opacity='0'
+        ball.style.transform =''
+        inner.style.transform =''
+        setTimeout(()=>{
+           this.ball[index].inTransition=false;
+        },400)
+      })
+    },
+    beforeDrop(){
+      for(let i =0;i<this.ball.length;i++){
+        if(!this.ball[i].inTransition){
+          this.ball[i].inTransition = true;
+          this.drop(i)
+          return
+        }
+      }
+    }
   },
   created () {
     this.name = this.goods.name;
@@ -235,6 +276,17 @@ export default {
         transition all 0.5s ease
       .show-enter, .show-leave-active
         transform translateX(100%)      
-
-
+  .ball
+    position absolute
+    bottom 19px
+    right 60px
+    z-index 200
+    transition: transform 0.4s cubic-bezier(0.39,-0.4,0.83,0.23)
+    .inner
+      width 16px
+      height 16px
+      border-radius 8px
+      background dark
+      opacity 0
+      transition transform 0.4s linear 
 </style>

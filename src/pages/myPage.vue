@@ -21,6 +21,20 @@
               <p>待发货</p>
             </div>
           </div>
+          <div class="nav">
+            <div class="item">
+              <span class="icon-box"></span>
+              <p>已完成</p>
+            </div>
+            <div class="item">
+              <span class="icon-car"></span>
+              <p>运输中</p>
+            </div>
+            <div class="item">
+              <span class="icon-order"></span>
+              <p>待发货</p>
+            </div>
+          </div>
       </div>
     </scroll>
 </template>
@@ -72,6 +86,7 @@ export default {
         flex 1
         height 80px
         text-align center
+        padding-top 10px
         border-1px-bottom(light)
         border-right 1px solid light
         &:last-child

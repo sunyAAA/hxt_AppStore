@@ -88,6 +88,8 @@ export default {
         {inTransition:false},
         {inTransition:false},
         {inTransition:false},
+        {inTransition:false},
+        {inTransition:false},
         {inTransition:false}
       ]
     }
@@ -126,7 +128,6 @@ export default {
       this.loadState.doRefresh = false;
     },
     drop(index){
-      console.log(index)
       let rect = this.$refs['btn'].getBoundingClientRect();
       let x = -(rect.left-window.innerWidth*2/8);
       let y = window.innerHeight-rect.bottom;
@@ -160,14 +161,6 @@ export default {
     this.name = this.goods.name;
     this.image = this.goods.image;
     this.price = this.goods.price;
-  },
-  watch:{
-    imgCount(){
-      if(this.imgCount==this.goods.info.length){
-        console.log('加载完毕')
-          this.refresh()
-        }
-    }
   }
 };
 </script>
@@ -189,7 +182,10 @@ export default {
       .right
         flex 1
         margin-left 10px
+        display flex
+        flex-direction column 
         .row
+          flex 1
           font-size 1.2rem
           line-height 1.5rem
           padding 1rem 0 1rem 1rem

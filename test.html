@@ -6,6 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>抛物线测试用例</title>
   <style>
+    /*抛物线样式*/
     .outer{
       position: fixed;
       transition: all 0.8s cubic-bezier(0.39,-0.4,0.83,0.23)
@@ -16,25 +17,178 @@
       background-color:#ff6326; 
       transition:all 0.8s linear 0s;
     }
+    /*进度条样式*/
+    #progress{
+      width: 50%; 
+      height: 30px;
+      border:1px solid #ccc;
+      border-radius: 15px;
+      margin: 50px 0 0 100px;
+      overflow: hidden;
+      box-shadow: 0 0 5px 0px #ddd inset;
+    }
+
+    #progress span {
+      display: inline-block;
+      width: 50%;
+      height: 100%;
+      background: #2989d8; /* Old browsers */
+      background: -moz-linear-gradient(45deg, #2989d8 33%, #7db9e8 34%, #7db9e8 59%, #2989d8 60%); /* FF3.6+ */
+      background: -webkit-gradient(linear, left bottom, right top, color-stop(33%,#2989d8), color-stop(34%,#7db9e8), color-stop(59%,#7db9e8), color-stop(60%,#2989d8)); /* Chrome,Safari4+ */
+      background: -webkit-linear-gradient(45deg, #2989d8 33%,#7db9e8 34%,#7db9e8 59%,#2989d8 60%); /* Chrome10+,Safari5.1+ */
+      background: -o-linear-gradient(45deg, #2989d8 33%,#7db9e8 34%,#7db9e8 59%,#2989d8 60%); /* Opera 11.10+ */
+      background: -ms-linear-gradient(45deg, #2989d8 33%,#7db9e8 34%,#7db9e8 59%,#2989d8 60%); /* IE10+ */
+      background: linear-gradient(45deg, #2989d8 33%,#7db9e8 34%,#7db9e8 59%,#2989d8 60%); /* W3C */
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2989d8', endColorstr='#2989d8',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+      background-size: 60px 30px;
+      text-align: center;
+      color:#fff;
+    }
+    /* 订单进度条 */
+    #progressBar{
+    width: 80%;
+    height: 50px;
+    position: relative;
+    margin: 50px 0 0 100px;
+}
+#progressBar div{
+    width: 100%;
+    height: 10px;
+    position: absolute;
+    top:50%;
+    left: 0;
+    margin-top:-20px;
+    border:1px solid #ddd;
+    background: #ccc;
+}
+#progressBar div span{
+    position: absolute;
+    display: inline-block;
+    background: green;
+    height: 10px;
+    width: 50%;
+}
+#progressBar>span{
+    position: absolute;
+    top:0;
+    margin-top: -10px;
+    width: 40px;
+    height: 40px;
+    border:2px solid #ddd;
+    border-radius: 50%;
+    margin-left: -20px;
+    color:#fff;
+}
+#progressBar>span:nth-child(6){
+    left: 0%;
+    background:green;
+    
+}
+#progressBar>span:nth-child(2){
+    left: 25%;
+    background:green;
+}
+#progressBar>span:nth-child(3){
+    left: 50%;
+    background:green;
+}
+#progressBar>span:nth-child(4){
+    left: 75%;
+    background:#ccc;
+}
+#progressBar>span:nth-child(5){
+    left: 100%;
+    background:#ccc;
+}
   </style>
 </head>
 <body>
   <button id='btn' onclick="fly()">click me </button>
-
+<!-- 抛物线 -->
   <div class='outer'>
     <div class='inner'>
 
     </div>
   </div>
+  <!-- 进度条 -->
+  <div id="progress">
+    <span>70%</span>
+  </div>
 
+  <!-- 订单进度条 -->
+  <div id="progressBar">
+      <!-- 进度条 -->
+      <div>
+          <span></span>
+      </div>
+      <!-- 五个圆 -->
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+ </div>
 </body>
 <script>
   function fly(){
     let a = document.getElementsByClassName('outer')[0]
     let b = document.getElementsByClassName('inner')[0]
-    console.log(a,b)
     a.style.transform='translate3d(0,500px,0)';
     b.style.transform='translate3d(600px,0,0)';
+  }
+
+  /*循环闭包取i*/
+  window.onload=function(){
+
+    for(var i = 0 ;i<5;i++){
+/*    解法一 ： 第二层直接使用闭包保存
+      (function(i){
+        var a  = document.createElement('a');
+        a.innerHTML = 'clike me';
+        a.onclick=function(){
+          console.log(i)
+        }
+        document.body.appendChild(a);
+      })(i)             
+*/      
+/*    解法二 ：匿名函数创建局部变量保存 i
+      (function(){
+        var n = i ;                               ****                                   
+        var a  = document.createElement('a');
+        a.innerHTML = 'clike me';
+        a.onclick=function(){
+          console.log(n)
+        }
+        document.body.appendChild(a);
+      })()
+*/      
+/*    解法三  闭包外层匿名函数自调接受并保存 i  返回内部函数并引用外层函数的参数
+        var a  = document.createElement('a');
+        a.innerHTML = 'clike me';
+        a.onclick=function(arg){
+          return function(){
+            console.log(arg)
+          }
+        }(i)
+        document.body.appendChild(a);
+*/
+/*    解法四：利用匿名函数保存 i 的值 在执行过程中通过 arguments.callee.i 取到
+      var a  = document.createElement('a');
+      a.innerHTML = 'clike me'; 
+      (a.onclick = function(){
+        console.log(arguments.callee.i)
+      }).i=i
+      document.body.appendChild(a);
+*/     
+      // 不使用闭包的时候
+      var a  = document.createElement('a');
+      a.innerHTML = 'clike me'; 
+      a.onclick = new Function('console.log('+i+')');
+      document.body.appendChild(a);
+    }
+
+
+
   }
 </script>
 </html>

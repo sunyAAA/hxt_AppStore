@@ -41,6 +41,9 @@
 
 <script>
 import VMenu from "./components/Menu"
+import Goods from './json/goods'
+import Slide from './json/slide'
+import Hot from './json/hot'
 export default {
   name: "app",
   components: {
@@ -92,15 +95,18 @@ export default {
     }
   },
   created () {
-    this.$http.get('/api/goods').then(res=>{
+   /*  this.$http.get('/api/goods').then(res=>{
       this.goods=res.data;
-    })
-    this.$http.get("/api/slides").then(res => {
+    }) */
+    this.goods ={'data':Goods}
+/*     this.$http.get("/api/slides").then(res => {
       this.slides = res.data.data;
-    });
-    this.$http.get('/api/hot').then(res=>{
+    }); */
+    this.slides = Slide
+/*     this.$http.get('/api/hot').then(res=>{
       this.hot = res.data.data;
-    })
+    }) */
+    this.hot = Hot
   },
   watch: {
     $route(){

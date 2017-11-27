@@ -128,6 +128,7 @@
       <span></span>
       <span></span>
  </div>
+ <p class="text">哈哈</p>
 </body>
 <script>
   function fly(){
@@ -186,9 +187,35 @@
       a.onclick = new Function('console.log('+i+')');
       document.body.appendChild(a);
     }
-
-
-
   }
+
+  /* 原型继承的实例   封装一个DOM查询*/
+  function Elm(id){
+    this.elem = document.getElementById(id);
+  }
+
+  Elm.prototype.html = function(val){
+    var elem = this.elem;
+    if(val){
+      elem.innerHTML = val;
+      return this         //链式操作
+    }else{
+      return elem.innerHTML
+    }
+  }
+
+  Elm.prototype.on = function(type,fn){
+    var elem = this.elem
+    elem.addEventListener(type,fn);
+    return this
+  }
+  function Cla (cla){
+    this.elem = document.getElementsByClassName(cla)[0];
+  }
+  Cla.prototype = new Elm()
+
+  var p = new Cla('text');
+/*   console.log(p.html())/*  */ 
+  console.log(p.html('Ok'))
 </script>
 </html>

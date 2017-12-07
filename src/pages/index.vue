@@ -117,7 +117,7 @@ export default {
   mounted () {
       setTimeout(() => {
         this._scrollInit()
-      }, 1000)
+      }, 1200)
   }
 };
 </script>

@@ -24,7 +24,7 @@
           <div class="nav">
             <div class="item">
               <span class="icon-box"></span>
-              <p>已完成</p>
+              <p>我的钱包</p>
             </div>
             <div class="item">
               <span class="icon-car"></span>
